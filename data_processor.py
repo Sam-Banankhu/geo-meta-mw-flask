@@ -17,9 +17,9 @@ def insert_data_from_csv(csv_file, model):
         # Commit the changes to the database
         db.session.commit()
 
-# insert_data_from_csv('data/districts.csv', District)
-# insert_data_from_csv('data/residential_areas.csv', ResidentialArea)
-# insert_data_from_csv('data/traditional_authorities.csv', TraditionalAuthority)
-# insert_data_from_csv('data/villages.csv', Village)
-# insert_data_from_csv('data/constituencies.csv', Constituency)
-# insert_data_from_csv('data/wards.csv', Ward)
+insert_data_from_csv('data/districts.csv', District)
+insert_data_from_csv('data/residential_areas.csv', ResidentialArea)
+insert_data_from_csv('data/traditional_authorities.csv', TraditionalAuthority)
+insert_data_from_csv('data/villages.csv', Village)
+insert_data_from_csv('data/constituencies.csv', Constituency)
+insert_data_from_csv('data/wards.csv', Ward)
