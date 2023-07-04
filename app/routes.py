@@ -33,6 +33,25 @@ def get_district_by_code(code):
     return jsonify(district_data)
 
 
+@app.route('/api/cities', methods=['GET'])
+def get_cities():
+    cities = City.query.all()
+    result = [{'id': c.id, 'name': f"{c.name} City", 'district': c.district.name, 'region': c.district.region.name} for c in cities]
+    return jsonify(result)
+
+@app.route('/api/city/<city_name>', methods=['GET'])
+def get_city_by_name(city_name):
+    city = City.query.filter_by(name=city_name.title()).first()
+    if not city:
+        abort(404, 'Districts not found')  # Return a 404 Not Found error if district with the provided code does not exist
+
+    city_data = {
+        'id': city.id,
+        'name': city.name,
+        'region': city.district.region.name
+    }
+    return jsonify(city_data)
+
 @app.route('/api/districts/<code>/cities', methods=['GET'])
 def get_cities_in_district(code):
     district = District.query.filter_by(code=code.upper()).first()
