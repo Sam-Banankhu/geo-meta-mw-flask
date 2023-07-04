@@ -12,6 +12,17 @@ class District(db.Model):
         self.region = row[2]
 
 
+class City(db.Model):
+ class City(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    district = db.relationship('District', backref=db.backref('cities', lazy=True))
+
+    def __repr__(self):
+        return f'<City {self.name}>'
+
+
 class ResidentialArea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
