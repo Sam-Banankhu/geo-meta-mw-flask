@@ -14,29 +14,41 @@ def get_districts():
 
 @app.route('/api/districts/<code>', methods=['GET'])
 def get_district_by_code(code):
-    district = District.query.filter_by(code=code).first()
+    district = District.query.filter_by(code=code.upper()).first()
     if not district:
-        abort(404)  # Return a 404 Not Found error if district with the provided code does not exist
+        abort(404, 'Districts not found')  # Return a 404 Not Found error if district with the provided code does not exist
 
     district_data = {
         'id': district.id,
         'name': district.name,
         'code': district.code,
         'region': district.region
-       
     }
     return jsonify(district_data)
 
 
 @app.route('/api/districts/<code>/cities', methods=['GET'])
 def get_cities_in_district(code):
-    district = District.query.filter_by(code=code).first()
+    district = District.query.filter_by(code=code.upper()).first()
     if not district:
         abort(404)  # Return a 404 Not Found error if district with the provided code does not exist
 
     cities = City.query.filter_by(district_id=district.id).all()
     city_data = [{'id': city.id, 'name': city.name, 'district_name': district.name} for city in cities]
     return jsonify(city_data)
+
+
+@app.route('/api/cities/<city_name>/zip-codes', methods=['GET'])
+def get_zip_codes(city_name):
+    city = City.query.filter_by(name=city_name).first()
+    if not city:
+        return jsonify({'error': 'City not found'}), 404
+
+    zip_codes = []
+    for ward in city.wards:
+        zip_codes.extend([v.zip_code for v in ward.villages])
+
+    return jsonify({'city': city_name, 'zip_codes': zip_codes})
 
 
 
