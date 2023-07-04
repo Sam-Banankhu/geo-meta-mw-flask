@@ -6,10 +6,16 @@ from app.models import *
 def index():
     return '<h1 style = "color:red">Hello, World!</h1>'
 
+@app.route('/api/regions', methods=['GET'])
+def get_regions():
+    regions = Region.query.all()
+    result = [{'id': d.id, 'name': d.name, 'code': d.code} for d in regions]
+    return jsonify(result)
+
 @app.route('/api/districts', methods=['GET'])
 def get_districts():
     districts = District.query.all()
-    result = [{'id': d.id, 'name': d.name, 'code': d.code, 'region': d.region} for d in districts]
+    result = [{'id': d.id, 'name': d.name, 'code': d.code, 'region': d.region.name} for d in districts]
     return jsonify(result)
 
 @app.route('/api/districts/<code>', methods=['GET'])
@@ -22,10 +28,29 @@ def get_district_by_code(code):
         'id': district.id,
         'name': district.name,
         'code': district.code,
-        'region': district.region
+        'region': district.region.name
     }
     return jsonify(district_data)
 
+
+@app.route('/api/cities', methods=['GET'])
+def get_cities():
+    cities = City.query.all()
+    result = [{'id': c.id, 'name': f"{c.name} City", 'district': c.district.name, 'region': c.district.region.name} for c in cities]
+    return jsonify(result)
+
+@app.route('/api/city/<city_name>', methods=['GET'])
+def get_city_by_name(city_name):
+    city = City.query.filter_by(name=city_name.title()).first()
+    if not city:
+        abort(404, 'Districts not found')  # Return a 404 Not Found error if district with the provided code does not exist
+
+    city_data = {
+        'id': city.id,
+        'name': city.name,
+        'region': city.district.region.name
+    }
+    return jsonify(city_data)
 
 @app.route('/api/districts/<code>/cities', methods=['GET'])
 def get_cities_in_district(code):

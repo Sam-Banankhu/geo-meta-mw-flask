@@ -1,26 +1,45 @@
 from app import db
 
-class District(db.Model):
+class Region(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     code = db.Column(db.String(255))
-    region = db.Column(db.String(255))
+   
 
     def populate_from_csv(self, row):
         self.name = row[0]
         self.code = row[1]
-        self.region = row[2]
+        
+
+class District(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    code = db.Column(db.String(255))
+    region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
+    region = db.relationship('Region', backref=db.backref('districts'))
+
+    def __repr__(self):
+        return f'<District {self.name}>'
+    
+    def populate_from_csv(self, row):
+        self.name = row[0]
+        self.code = row[1]
+        self.region_id = int(row[2])
+
 
 
 class City(db.Model):
- class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
-    district = db.relationship('District', backref=db.backref('cities', lazy=True))
+    district = db.relationship('District', backref=db.backref('cities'))
 
     def __repr__(self):
         return f'<City {self.name}>'
+
+    def populate_from_csv(self, row):
+        self.name = row[0]
+        self.district_id = int(row[1])
 
 
 class ResidentialArea(db.Model):
