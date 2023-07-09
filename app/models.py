@@ -110,3 +110,20 @@ class Ward(db.Model):
     def populate_from_csv(self, row):
         self.name = row[0]
         self.constituency_id = int(row[1])
+
+
+class School(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    school_name = db.Column(db.String(255))
+    address = db.Column(db.String(255))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    district = db.relationship('District', backref=db.backref('schools'))
+
+    def __repr__(self):
+        return f'<School {self.school_name}>'
+
+    def populate_from_csv(self, row):
+        self.school_name = row[0]
+        self.address = row[1]
+        self.district_id = int(row[2])
+

@@ -106,3 +106,5 @@ def get_wards():
     wards = Ward.query.all()
     result = [{'id': w.id, 'name': w.name, 'constituency_name': w.constituency.name} for w in wards]
     return jsonify(result)
+
+# TO-DO add code to get schools by city, district, region etc
