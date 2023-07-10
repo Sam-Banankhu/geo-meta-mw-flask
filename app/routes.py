@@ -39,6 +39,19 @@ def get_cities():
     result = [{'id': c.id, 'name': f"{c.name} City", 'district': c.district.name, 'region': c.district.region.name} for c in cities]
     return jsonify(result)
 
+# code to download csv of cities
+@app.route('/api/cities/download', methods=['GET'])
+def download_cities_csv():
+    cities = City.query.all()
+    data = 'id,name,district_id\n'  # CSV header
+    for city in cities:
+        data += f'{city.id},{city.name},{city.district_id}\n'  # CSV data rows
+
+    response = Response(data, mimetype='text/csv')
+    response.headers.set('Content-Disposition', 'attachment', filename='cities.csv')
+    return response
+
+
 @app.route('/api/city/<city_name>', methods=['GET'])
 def get_city_by_name(city_name):
     city = City.query.filter_by(name=city_name.title()).first()
