@@ -96,6 +96,16 @@ def get_residential_areas():
     result = [{'id': r.id, 'name': r.name,  'district_name': r.district.name} for r in residential_areas]
     return jsonify(result)
 
+@app.route('/api/residential_areas/<district_code>', methods=['GET'])
+def get_residential_areas_by_district_code(district_code):
+    district = District.query.filter_by(code=district_code.upper()).first()
+    if not district:
+        return jsonify({'message': 'District not found'}), 404
+    
+    residential_areas = ResidentialArea.query.filter_by(district_id=district.id).all()
+    result = [{'id': r.id, 'name': r.name, 'district_id': r.district_id} for r in residential_areas]
+    return jsonify(result)
+
 @app.route('/api/traditional_authorities', methods=['GET'])
 def get_traditional_authorities():
     traditional_authorities = TraditionalAuthority.query.all()
