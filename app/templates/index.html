@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geo-Meta Project</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Geo-Meta Project</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('get_districts') }}">Districts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('get_residential_areas') }}">Residential Areas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('get_traditional_authorities') }}">Traditional Authorities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('get_villages') }}">Villages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('get_constituencies') }}">Constituencies</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('get_wards') }}">Wards</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container mt-4">
+        <h1>Welcome to the Geo-Meta Project</h1>
+        <section class="mt-4">
+            <h2>About the Project</h2>
+            <p>
+                The Geo-Meta project is a location-based API platform that provides developers with access to geographic
+                metadata of various regions, districts, cities, and more in Malawi. It aims to simplify the retrieval of
+                location data and empower developers to build innovative applications leveraging this information.
+            </p>
+        </section>
+        <section class="mt-4">
+            <h2>Available Endpoints</h2>
+            <ul>
+                <li><a href="{{ url_for('get_districts') }}">/api/districts</a> - Retrieve a list of all districts</li>
+                <li><a href="{{ url_for('get_residential_areas') }}">/api/residential_areas</a> - Retrieve a list of all residential areas</li>
+                <li><a href="{{ url_for('get_traditional_authorities') }}">/api/traditional_authorities</a> - Retrieve a list of all traditional authorities</li>
+                <li><a href="{{ url_for('get_villages') }}">/api/villages</a> - Retrieve a list of all villages</li>
+                <li><a href="{{ url_for('get_constituencies') }}">/api/constituencies</a> - Retrieve a list of all constituencies</li>
+                <li><a href="{{ url_for('get_wards') }}">/api/wards</a> - Retrieve a list of all wards</li>
+            </ul>
+        </section>
+    </div>
+    <footer class="mt-4 py-3 bg-light text-center">
+        <p>&copy; 2023 Geo-Meta Project</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

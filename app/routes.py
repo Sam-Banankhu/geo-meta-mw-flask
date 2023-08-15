@@ -4,7 +4,7 @@ from app.models import *
 
 @app.route('/')
 def index():
-    return '<h1 style = "color:red">Hello, World!</h1>'
+    return render_template('index.html')
 
 @app.route('/api/regions', methods=['GET'])
 def get_regions():
@@ -38,6 +38,19 @@ def get_cities():
     cities = City.query.all()
     result = [{'id': c.id, 'name': f"{c.name} City", 'district': c.district.name, 'region': c.district.region.name} for c in cities]
     return jsonify(result)
+
+# code to download csv of cities
+@app.route('/api/cities/download', methods=['GET'])
+def download_cities_csv():
+    cities = City.query.all()
+    data = 'id,name,district_id\n'  # CSV header
+    for city in cities:
+        data += f'{city.id},{city.name},{city.district_id}\n'  # CSV data rows
+
+    response = Response(data, mimetype='text/csv')
+    response.headers.set('Content-Disposition', 'attachment', filename='cities.csv')
+    return response
+
 
 @app.route('/api/city/<city_name>', methods=['GET'])
 def get_city_by_name(city_name):
@@ -81,6 +94,16 @@ def get_zip_codes(city_name):
 def get_residential_areas():
     residential_areas = ResidentialArea.query.all()
     result = [{'id': r.id, 'name': r.name,  'district_name': r.district.name} for r in residential_areas]
+    return jsonify(result)
+
+@app.route('/api/residential_areas/<district_code>', methods=['GET'])
+def get_residential_areas_by_district_code(district_code):
+    district = District.query.filter_by(code=district_code.upper()).first()
+    if not district:
+        return jsonify({'message': 'District not found'}), 404
+    
+    residential_areas = ResidentialArea.query.filter_by(district_id=district.id).all()
+    result = [{'id': r.id, 'name': r.name, 'district_id': r.district_id} for r in residential_areas]
     return jsonify(result)
 
 @app.route('/api/traditional_authorities', methods=['GET'])

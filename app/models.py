@@ -15,7 +15,7 @@ class District(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     code = db.Column(db.String(255))
-    region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
+    region_id = db.Column(db.Integer, db.ForeignKey('region.id', onupdate='CASCADE', ondelete='CASCADE'))
     region = db.relationship('Region', backref=db.backref('districts'))
 
     def __repr__(self):
@@ -31,7 +31,7 @@ class District(db.Model):
 class City(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id', onupdate='CASCADE', ondelete='CASCADE'))
     district = db.relationship('District', backref=db.backref('cities'))
 
     def __repr__(self):
@@ -44,7 +44,7 @@ class City(db.Model):
 
 class ResidentialArea(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id', onupdate='CASCADE', ondelete='CASCADE'))
     name = db.Column(db.String(255))
     district = db.relationship('District', backref=db.backref('residential_areas'))
 
@@ -59,7 +59,7 @@ class ResidentialArea(db.Model):
 class TraditionalAuthority(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id', onupdate='CASCADE', ondelete='CASCADE'))
     district = db.relationship('District', backref=db.backref('traditional_authorities'))
 
     def __repr__(self):
@@ -73,7 +73,7 @@ class TraditionalAuthority(db.Model):
 class Village(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     village_name = db.Column(db.String(255))
-    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id', onupdate='CASCADE', ondelete='CASCADE'))
     district = db.relationship('District', backref=db.backref('villages'))
 
     def __repr__(self):
@@ -87,7 +87,7 @@ class Village(db.Model):
 class Constituency(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id', onupdate='CASCADE', ondelete='CASCADE'))
     district = db.relationship('District', backref=db.backref('constituencies'))
 
     def __repr__(self):
@@ -101,7 +101,7 @@ class Constituency(db.Model):
 class Ward(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    constituency_id = db.Column(db.Integer, db.ForeignKey('constituency.id'))
+    constituency_id = db.Column(db.Integer, db.ForeignKey('constituency.id', onupdate='CASCADE', ondelete='CASCADE'))
     constituency = db.relationship('Constituency', backref=db.backref('wards'))
 
     def __repr__(self):
@@ -116,7 +116,7 @@ class School(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     school_name = db.Column(db.String(255))
     address = db.Column(db.String(255))
-    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id', onupdate='CASCADE', ondelete='CASCADE'))
     district = db.relationship('District', backref=db.backref('schools'))
 
     def __repr__(self):
